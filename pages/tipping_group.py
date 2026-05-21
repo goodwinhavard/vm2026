@@ -7,6 +7,12 @@ import streamlit as st
 DATA_FILE = Path(__file__).resolve().parents[1] / "wc_groups.txt"
 
 
+def init_session_state():
+    """Initialize session state for group stage scores."""
+    if "group_scores" not in st.session_state:
+        st.session_state.group_scores = {}
+
+
 @st.cache_data
 def load_groups():
     groups = {}
@@ -83,19 +89,42 @@ def compute_standings(groups, matches):
     return standings
 
 
+def get_third_place_teams(standings):
+    third_place = []
+    for group, table in standings.items():
+        if len(table) >= 3:
+            third_team = table.iloc[2].copy()
+            third_team["Group"] = group
+            third_place.append(third_team)
+    
+    if third_place:
+        df = pd.DataFrame(third_place)
+        df = df[["Group", "Team", "Pts", "GD", "GF", "GA", "W", "D", "L", "Pld"]]
+        df = df.sort_values(
+            by=["Pts", "GD", "GF"],
+            ascending=[False, False, False],
+        ).reset_index(drop=True)
+        return df
+    return pd.DataFrame()
+
+
 def display_matches(groups, matches, standings):
     st.write(
         "Enter predictions for each group stage match below. Each team plays the other teams in its group once, "
         "for a total of 6 matches per group."
     )
 
-    for group, fixtures in matches.items():
-        with st.expander(f"{group} matches", expanded=True):
+    col_left, col_right = st.columns(2)
+
+    with col_left:
+        st.subheader("Matches")
+        for group, fixtures in matches.items():
+            st.write(f"**{group}**")
             for team1, team2 in fixtures:
                 cols = st.columns([2, 1, 0.5, 1, 2])
-                cols[0].write(f"**{team1}**")
+                cols[0].write(f"{team1}")
                 score1 = cols[1].number_input(
-                    "",
+                    f"{group}: {team1} score",
                     min_value=0,
                     max_value=20,
                     key=f"{group}_{team1}_vs_{team2}_score1",
@@ -103,30 +132,38 @@ def display_matches(groups, matches, standings):
                 )
                 cols[2].write(":")
                 score2 = cols[3].number_input(
-                    "",
+                    f"{group}: {team2} score",
                     min_value=0,
                     max_value=20,
                     key=f"{group}_{team1}_vs_{team2}_score2",
                     label_visibility="collapsed",
                 )
-                cols[4].write(f"**{team2}**")
+                cols[4].write(f"{team2}")
+            st.divider()
 
-            st.markdown("---")
-            st.write(f"### {group} standings")
-            st.dataframe(standings[group], use_container_width=True)
+    with col_right:
+        st.subheader("Group Standings")
+        for group, table in standings.items():
+            st.write(f"**{group}**")
+            st.dataframe(table, width="stretch")
+            st.divider()
+
+    st.markdown("---")
+    st.subheader("Third Place Teams Ranking")
+    third_place_df = get_third_place_teams(standings)
+    st.dataframe(third_place_df, width="stretch")
 
 
 def main():
     st.title("Tipping Page")
     st.header("World Cup 2026 Predictions")
 
+    init_session_state()
+
     groups = load_groups()
     matches = build_matches(groups)
-    standings = compute_standings(groups, matches)
 
-    with st.form("prediction_form"):
-        display_matches(groups, matches, standings)
-        st.form_submit_button("Update standings")
+    display_matches(groups, matches, compute_standings(groups, matches))
 
 
 if __name__ == "__main__":
