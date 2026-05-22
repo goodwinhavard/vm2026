@@ -1,0 +1,48 @@
+France	1877
+Spain	1876
+Argentina	1875
+England	1826
+Portugal	1764
+Brazil	1761
+Netherlands	1758
+Morocco	1756
+Belgium	1735
+Germany	1730
+Croatia	1717
+Colombia	1693
+Senegal	1689
+Mexico	1681
+United States	1673
+Uruguay	1673
+Japan	1660
+Switzerland	1649
+Iran	1615
+Turkey	1599
+Ecuador	1595
+Austria	1593
+South Korea	1589
+Australia	1581
+Algeria	1564
+Egypt	1563
+Canada	1556
+Norway	1551
+Panama	1541
+Ivory Coast	1533
+Sweden	1515
+Paraguay	1504
+Czech Republic	1501
+Scotland	1498
+Tunisia	1483
+Congo DR	1478
+Uzbekistan	1465
+Qatar	1455
+Iraq	1447
+South Africa	1430
+Saudi Arabia	1421
+Jordan	1391
+Bosnia and Herzegovina	1386
+Cape Verde	1366
+Ghana	1346
+Curaçao	1295
+Haiti	1292
+New Zealand	1282

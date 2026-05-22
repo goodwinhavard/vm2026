@@ -45,5 +45,8 @@ print("Filtered sub_version shape:", sub_version.shape)
 print(len(sub_version))
 print(sub_version.head())
 
+sub_version.to_csv("training_data.csv", index=False)
+
+
 
 

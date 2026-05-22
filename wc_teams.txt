@@ -11,12 +11,12 @@ Qatar
 Saudi Arabia
 Uzbekistan
 Algeria
-Cabo Verde
+Cape Verde
 Congo DR
 Ivory Coast
 Egypt
 Ghana
-Morocco,
+Morocco
 Senegal
 South Africa
 Tunisia
@@ -34,7 +34,7 @@ Austria
 Belgium
 Bosnia and Herzegovina
 Croatia
-Czechia
+Czech Republic
 England
 France
 Germany
