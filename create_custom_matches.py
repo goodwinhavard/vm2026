@@ -35,7 +35,7 @@ random.seed(42)
 
 team_list = teams_df.to_dict('records')
 
-for i in range(2000):
+for i in range(500):
     # Randomly select two teams
     team1, team2 = random.sample(team_list, 2)
     
@@ -60,7 +60,7 @@ for i in range(2000):
 matches_df = pd.DataFrame(matches)
 
 # Save to CSV
-matches_df.to_csv('custom_matches.csv', index=False)
+
 
 print(f"\n{len(matches_df)} custom matches created and saved to 'custom_matches.csv'")
 print(f"\nFirst 10 matches:")
@@ -78,4 +78,6 @@ print(f"\n\nAll matches (Home-Team, Away-Team, Home-Goals, Away-Goals):")
 results_table = matches_df[['team1', 'team2', 'team1_goals', 'team2_goals']].copy()
 results_table.columns = ['Home-Team', 'Away-Team', 'Home-Goals', 'Away-Goals']
 print(results_table.to_string(index=False))
+
+results_table.to_csv('custom_matches.csv', index=False)
 

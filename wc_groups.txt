@@ -15,7 +15,7 @@ Group D: Paraguay
 Group D: Australia
 Group D: Turkey
 Group E: Germany
-Group E: Curaçao
+Group E: Curacao
 Group E: Ivory Coast
 Group E: Ecuador
 Group F: Netherlands

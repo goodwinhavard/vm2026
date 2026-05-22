@@ -12,6 +12,13 @@ print("Path to dataset files:", path)
 matches_csv = os.path.join(path, "matches.csv")
 vm_historical_matches_df = pd.read_csv(matches_csv)
 
+# Only include historical matches from 2018 and later
+vm_historical_matches_df['match_date'] = pd.to_datetime(
+    vm_historical_matches_df['match_date'], errors='coerce'
+)
+vm_historical_matches_df = vm_historical_matches_df[
+    vm_historical_matches_df['match_date'].dt.year >= 2018
+]
 
 
 vm_historical_matches_df[['home_team', 'away_team']] = vm_historical_matches_df['match_name'].str.extract(r'^(.*?)\s+v\s+(.*?)$')
@@ -39,13 +46,13 @@ print("World Cup 2026 teams:", wc_teams_2026)
 
 sub_version = combined_df[
     combined_df['home_team'].isin(wc_teams_2026)
-    | combined_df['away_team'].isin(wc_teams_2026)
+    & combined_df['away_team'].isin(wc_teams_2026)
 ].reset_index(drop=True)
 print("Filtered sub_version shape:", sub_version.shape)
 print(len(sub_version))
 print(sub_version.head())
 
-sub_version.to_csv("training_data.csv", index=False)
+sub_version.to_csv("training_data_fra_kvalikk_og_hist.csv", index=False)
 
 
 

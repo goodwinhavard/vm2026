@@ -5,12 +5,42 @@ from train_poisson_model import train_poisson_model
 
 
 def main():
-    csv_path = os.path.join(os.path.dirname(__file__), 'training_data.csv')
+    csv_path = os.path.join(os.path.dirname(__file__), 'training_data_fra_kvalikk_og_hist.csv')
     if not os.path.exists(csv_path):
         print(f"training CSV not found: {csv_path}")
         return
-
     df = pd.read_csv(csv_path)
+
+    # Read random generated matches
+    custom_path = os.path.join(os.path.dirname(__file__), 'custom_matches.csv')
+    if os.path.exists(custom_path):
+        custom_df = pd.read_csv(custom_path)
+
+        # Align custom generated match columns with the training data schema
+        custom_df = custom_df.rename(
+            columns={
+                'team1': 'home_team',
+                'team2': 'away_team',
+                'team1_goals': 'home_goal',
+                'team2_goals': 'away_goal',
+            }
+        )
+
+        expected_cols = ['home_team', 'away_team', 'home_goal', 'away_goal']
+        if not set(expected_cols).issubset(custom_df.columns):
+            missing = sorted(set(expected_cols) - set(custom_df.columns))
+            raise ValueError(
+                f"custom_matches.csv is missing required columns: {missing}"
+            )
+
+        custom_df = custom_df[expected_cols]
+        df = pd.concat([df, custom_df], ignore_index=True, sort=False)
+    else:
+        print(f"custom_matches.csv not found: {custom_path}")
+
+    #print(df.head())
+
+    #exit(1)
 
     # Rename columns to match the trainer's expectations
     mapping = {

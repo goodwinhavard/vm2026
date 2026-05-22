@@ -43,6 +43,6 @@ Jordan	1391
 Bosnia and Herzegovina	1386
 Cape Verde	1366
 Ghana	1346
-Curaçao	1295
+Curacao	1295
 Haiti	1292
 New Zealand	1282
