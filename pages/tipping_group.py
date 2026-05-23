@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-DATA_FILE = Path(__file__).resolve().parents[1] / "wc_groups.txt"
+DATA_FILE = Path(__file__).resolve().parents[1] / "data" / "wc_groups.txt"
 
 
 def init_session_state():

@@ -5,14 +5,14 @@ from train_poisson_model import train_poisson_model
 
 
 def main():
-    csv_path = os.path.join(os.path.dirname(__file__), 'training_data_fra_kvalikk_og_hist.csv')
+    csv_path = os.path.join(os.path.dirname(__file__), 'data', 'training_data_fra_kvalikk_og_hist.csv')
     if not os.path.exists(csv_path):
         print(f"training CSV not found: {csv_path}")
         return
     df = pd.read_csv(csv_path)
 
     # Read random generated matches
-    custom_path = os.path.join(os.path.dirname(__file__), 'custom_matches.csv')
+    custom_path = os.path.join(os.path.dirname(__file__), 'data', 'custom_matches_manuell.csv')
     if os.path.exists(custom_path):
         custom_df = pd.read_csv(custom_path)
 
@@ -23,6 +23,10 @@ def main():
                 'team2': 'away_team',
                 'team1_goals': 'home_goal',
                 'team2_goals': 'away_goal',
+                'Home-Team': 'home_team',
+                'Away-Team': 'away_team',
+                'Home-Goals': 'home_goal',
+                'Away-Goals': 'away_goal',
             }
         )
 
@@ -51,7 +55,7 @@ def main():
     }
     df = df.rename(columns=mapping)
 
-    rank_file = os.path.join(os.path.dirname(__file__), 'fifa_rank.txt')
+    rank_file = os.path.join(os.path.dirname(__file__), 'data', 'fifa_rank.txt')
     model, err = train_poisson_model(df, fifa_rank_file=rank_file)
     if err:
         print('Training failed:', err)

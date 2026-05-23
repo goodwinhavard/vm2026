@@ -1,11 +1,15 @@
+import os
 import pandas as pd
 import numpy as np
 from numpy.random import poisson
 import random
 
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+os.makedirs(DATA_DIR, exist_ok=True)
+
 # Read FIFA ranking and team ratings
 teams_data = []
-with open('fifa_rank.txt', 'r') as f:
+with open(os.path.join(DATA_DIR, 'fifa_rank.txt'), 'r', encoding='utf-8') as f:
     for line in f:
         parts = line.strip().split('\t')
         if len(parts) == 2:
@@ -60,9 +64,10 @@ for i in range(500):
 matches_df = pd.DataFrame(matches)
 
 # Save to CSV
+output_path = os.path.join(DATA_DIR, 'custom_matches.csv')
+matches_df.to_csv(output_path, index=False)
 
-
-print(f"\n{len(matches_df)} custom matches created and saved to 'custom_matches.csv'")
+print(f"\n{len(matches_df)} custom matches created and saved to '{output_path}'")
 print(f"\nFirst 10 matches:")
 print(matches_df.head(10).to_string())
 
@@ -79,5 +84,5 @@ results_table = matches_df[['team1', 'team2', 'team1_goals', 'team2_goals']].cop
 results_table.columns = ['Home-Team', 'Away-Team', 'Home-Goals', 'Away-Goals']
 print(results_table.to_string(index=False))
 
-results_table.to_csv('custom_matches.csv', index=False)
+results_table.to_csv(output_path, index=False)
 

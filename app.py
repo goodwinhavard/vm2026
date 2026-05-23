@@ -16,7 +16,7 @@ st.sidebar.write(
 )
 
 st.title("World Cup 2026")
-st.header("Tippekonkurranse for FIFA World Cup 2026")
+st.header("Prediksjonsmodell for FIFA World Cup 2026")
 
 col1, col2, col3 = st.columns(3)
 col1.metric("Host countries", "USA, Canada, Mexico")
