@@ -1,14 +1,83 @@
 import streamlit as st
 import pandas as pd
+import os
+import pickle
+from train_poisson_model import train_poisson_model
 from simulate_world_cup import run_full_simulation
 
 st.set_page_config(page_title="World Cup 2026 Simulation", layout="wide")
+
+
+@st.cache_resource
+def train_and_save_model():
+    """Train the Poisson model and save it to pickle file."""
+    csv_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'training_data_fra_kvalikk_og_hist.csv')
+    if not os.path.exists(csv_path):
+        return None, f"Training CSV not found: {csv_path}"
+    
+    df = pd.read_csv(csv_path)
+    
+    # Read custom matches if available
+    custom_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'custom_matches_manuell.csv')
+    if os.path.exists(custom_path):
+        custom_df = pd.read_csv(custom_path)
+        
+        # Align custom generated match columns with the training data schema
+        custom_df = custom_df.rename(
+            columns={
+                'team1': 'home_team',
+                'team2': 'away_team',
+                'team1_goals': 'home_goal',
+                'team2_goals': 'away_goal',
+                'Home-Team': 'home_team',
+                'Away-Team': 'away_team',
+                'Home-Goals': 'home_goal',
+                'Away-Goals': 'away_goal',
+            }
+        )
+        
+        expected_cols = ['home_team', 'away_team', 'home_goal', 'away_goal']
+        if not set(expected_cols).issubset(custom_df.columns):
+            missing = sorted(set(expected_cols) - set(custom_df.columns))
+            return None, f"custom_matches.csv is missing required columns: {missing}"
+        
+        custom_df = custom_df[expected_cols]
+        df = pd.concat([df, custom_df], ignore_index=True, sort=False)
+    
+    # Rename columns to match the trainer's expectations
+    mapping = {
+        'home_team': 'Home Team',
+        'away_team': 'Away Team',
+        'home_goal': 'Home Score',
+        'away_goal': 'Away Score',
+    }
+    df = df.rename(columns=mapping)
+    
+    model, err = train_poisson_model(df)
+    if err:
+        return None, f"Training failed: {err}"
+    
+    # Save model to pickle file
+    out_path = os.path.join(os.path.dirname(__file__), '..', 'poisson_model.pkl')
+    with open(out_path, 'wb') as f:
+        pickle.dump(model, f)
+    
+    return model, None
 
 st.title("🏆 World Cup 2026 Predictions")
 st.markdown("""
 This page shows the probabilities of each team reaching various stages of the 2026 World Cup, 
 calculated using a Poisson-based prediction model trained on historical and qualifying data.
 """)
+
+# Train model first
+with st.spinner("Training Poisson model..."):
+    model, err = train_and_save_model()
+    if err:
+        st.error(f"Model training failed: {err}")
+        st.stop()
+    
+st.success(f"✓ Model trained on {len(model['teams'])} teams")
 
 num_sims = 10000
 
