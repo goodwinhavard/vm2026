@@ -182,8 +182,9 @@ def simulate_knockout_stage(standings, group_rankings, model):
         reached.append((match_winners[104], "Winner"))
     return reached
 
-def run_full_simulation(num_sims=1000):
-    model = load_poisson_model()
+def run_full_simulation(num_sims=1000, model=None):
+    if model is None:
+        model = load_poisson_model()
     groups, team_to_group = load_groups()
     matches = load_matches()
 

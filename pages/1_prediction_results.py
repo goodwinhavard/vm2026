@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import os
-import pickle
 from train_poisson_model import train_poisson_model
 from simulate_world_cup import run_full_simulation
 
@@ -57,11 +56,6 @@ def train_and_save_model():
     if err:
         return None, f"Training failed: {err}"
     
-    # Save model to pickle file
-    out_path = os.path.join(os.path.dirname(__file__), '..', 'poisson_model.pkl')
-    with open(out_path, 'wb') as f:
-        pickle.dump(model, f)
-    
     return model, None
 
 st.title("🏆 World Cup 2026 Predictions")
@@ -83,7 +77,7 @@ num_sims = 10000
 
 
 with st.spinner(f"Running {num_sims} tournament simulations..."):
-    groups, pos_counts, ko_counts = run_full_simulation(num_sims)
+    groups, pos_counts, ko_counts = run_full_simulation(num_sims, model=model)
     
 st.subheader("Top 5 Favorites to Win")
 all_teams_list = [team for group in groups.values() for team in group]
