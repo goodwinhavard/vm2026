@@ -3,58 +3,13 @@ import pickle
 import numpy as np
 import pandas as pd
 from collections import defaultdict
+from tournament_config import GROUPS, KNOCKOUT_DEFS
 
-# Use absolute paths for the project structure as provided in context
-BASE_DIR = r"c:\projects\vm2026"
+# Use relative paths for the project structure so it works on both local and server
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 MODEL_PATH = os.path.join(BASE_DIR, "poisson_model.pkl")
 MATCHES_FILE = os.path.join(DATA_DIR, "wc_group_matches.txt")
-GROUPS_FILE = os.path.join(DATA_DIR, "wc_groups.txt")
-
-# Knockout definitions and source resolution logic adapted from tipping_knockout.py
-KNOCKOUT_DEFS = {
-    "Round of 32": {
-        73: {"home": {"type": "group", "group": "Group A", "position": "runner_up"}, "away": {"type": "group", "group": "Group B", "position": "runner_up"}},
-        74: {"home": {"type": "group", "group": "Group E", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group A", "Group B", "Group C", "Group D", "Group F"]}},
-        75: {"home": {"type": "group", "group": "Group F", "position": "winner"}, "away": {"type": "group", "group": "Group C", "position": "runner_up"}},
-        76: {"home": {"type": "group", "group": "Group C", "position": "winner"}, "away": {"type": "group", "group": "Group F", "position": "runner_up"}},
-        77: {"home": {"type": "group", "group": "Group I", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group C", "Group D", "Group F", "Group G", "Group H"]}},
-        78: {"home": {"type": "group", "group": "Group E", "position": "runner_up"}, "away": {"type": "group", "group": "Group I", "position": "runner_up"}},
-        79: {"home": {"type": "group", "group": "Group A", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group C", "Group E", "Group F", "Group H", "Group I"]}},
-        80: {"home": {"type": "group", "group": "Group L", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group E", "Group H", "Group I", "Group J", "Group K"]}},
-        81: {"home": {"type": "group", "group": "Group D", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group B", "Group E", "Group F", "Group I", "Group J"]}},
-        82: {"home": {"type": "group", "group": "Group G", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group A", "Group E", "Group H", "Group I", "Group J"]}},
-        83: {"home": {"type": "group", "group": "Group K", "position": "runner_up"}, "away": {"type": "group", "group": "Group L", "position": "runner_up"}},
-        84: {"home": {"type": "group", "group": "Group H", "position": "winner"}, "away": {"type": "group", "group": "Group J", "position": "runner_up"}},
-        85: {"home": {"type": "group", "group": "Group B", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group E", "Group F", "Group G", "Group I", "Group J"]}},
-        86: {"home": {"type": "group", "group": "Group J", "position": "winner"}, "away": {"type": "group", "group": "Group H", "position": "runner_up"}},
-        87: {"home": {"type": "group", "group": "Group K", "position": "winner"}, "away": {"type": "best_third", "groups": ["Group D", "Group E", "Group I", "Group J", "Group L"]}},
-        88: {"home": {"type": "group", "group": "Group D", "position": "runner_up"}, "away": {"type": "group", "group": "Group G", "position": "runner_up"}},
-    },
-    "Round of 16": {
-        89: {"home": {"type": "match", "match": 74}, "away": {"type": "match", "match": 77}},
-        90: {"home": {"type": "match", "match": 73}, "away": {"type": "match", "match": 75}},
-        91: {"home": {"type": "match", "match": 76}, "away": {"type": "match", "match": 78}},
-        92: {"home": {"type": "match", "match": 79}, "away": {"type": "match", "match": 80}},
-        93: {"home": {"type": "match", "match": 83}, "away": {"type": "match", "match": 84}},
-        94: {"home": {"type": "match", "match": 81}, "away": {"type": "match", "match": 82}},
-        95: {"home": {"type": "match", "match": 86}, "away": {"type": "match", "match": 88}},
-        96: {"home": {"type": "match", "match": 85}, "away": {"type": "match", "match": 87}},
-    },
-    "Quarterfinals": {
-        97: {"home": {"type": "match", "match": 89}, "away": {"type": "match", "match": 90}},
-        98: {"home": {"type": "match", "match": 93}, "away": {"type": "match", "match": 94}},
-        99: {"home": {"type": "match", "match": 91}, "away": {"type": "match", "match": 92}},
-        100: {"home": {"type": "match", "match": 95}, "away": {"type": "match", "match": 96}},
-    },
-    "Semifinals": {
-        101: {"home": {"type": "match", "match": 97}, "away": {"type": "match", "match": 98}},
-        102: {"home": {"type": "match", "match": 99}, "away": {"type": "match", "match": 100}},
-    },
-    "Final": {
-        104: {"home": {"type": "match", "match": 101}, "away": {"type": "match", "match": 102}},
-    },
-}
 
 def resolve_source(source, standings, group_rankings, match_winners, used_thirds):
     if source["type"] == "group":
@@ -92,20 +47,11 @@ def load_poisson_model():
         return pickle.load(f)
 
 def load_groups():
-    groups = {}
     team_to_group = {}
-    if not os.path.exists(GROUPS_FILE):
-        raise FileNotFoundError(f"Groups file not found: {GROUPS_FILE}")
-    
-    with open(GROUPS_FILE, 'r', encoding='utf-8') as f:
-        for line in f:
-            line = line.strip()
-            if not line or ":" not in line:
-                continue
-            group_name, team_name = [part.strip() for part in line.split(":", 1)]
-            groups.setdefault(group_name, []).append(team_name)
-            team_to_group[team_name] = group_name
-    return groups, team_to_group
+    for group_name, teams in GROUPS.items():
+        for team in teams:
+            team_to_group[team] = group_name
+    return GROUPS, team_to_group
 
 def load_matches():
     matches = []
@@ -204,33 +150,33 @@ def run_full_simulation(num_sims=1000, model=None):
             
     return groups, pos_counts, ko_counts
 
-def main():
-    num_sims = 1000
-    groups, pos_counts, ko_counts = run_full_simulation(num_sims)
+# def main():
+#     num_sims = 1000
+#     groups, pos_counts, ko_counts = run_full_simulation(num_sims)
 
-    print(f"World Cup 2026 Group Stage Simulation ({num_sims} iterations)")
-    print("Format: Team | Probabilities of finishing (1st, 2nd, 3rd, 4th)\n")
-    for g in sorted(groups.keys()):
-        print(f"--- {g} ---")
-        # Sort teams by their probability of finishing at the top of the group
-        sorted_teams = sorted(groups[g], key=lambda t: pos_counts[g][t], reverse=True)
-        for i, t in enumerate(sorted_teams):
-            probs = [f"{c/num_sims:.0%}" for c in pos_counts[g][t]]
-            print(f"{i+1}. {t.ljust(20)}: {', '.join(probs)}")
-        print()
+#     print(f"World Cup 2026 Group Stage Simulation ({num_sims} iterations)")
+#     print("Format: Team | Probabilities of finishing (1st, 2nd, 3rd, 4th)\n")
+#     for g in sorted(groups.keys()):
+#         print(f"--- {g} ---")
+#         # Sort teams by their probability of finishing at the top of the group
+#         sorted_teams = sorted(groups[g], key=lambda t: pos_counts[g][t], reverse=True)
+#         for i, t in enumerate(sorted_teams):
+#             probs = [f"{c/num_sims:.0%}" for c in pos_counts[g][t]]
+#             print(f"{i+1}. {t.ljust(20)}: {', '.join(probs)}")
+#         print()
 
-    print("Knockout Stage Probabilities (Top 20 Favorites)")
-    print("Team".ljust(20) + " | R32   | R16   | QF    | SF    | Final | Winner")
-    print("-" * 75)
-    all_teams = [t for g, teams in groups.items() for t in teams]
-    sorted_overall = sorted(all_teams, key=lambda t: ko_counts[t]["Winner"], reverse=True)
-    for t in sorted_overall[:20]:
-        row = []
-        for r in ["Round of 32", "Round of 16", "Quarterfinals", "Semifinals", "Final", "Winner"]:
-            prob = ko_counts[t].get(r, 0) / num_sims
-            row.append(f"{prob:.1%}".ljust(5))
-        print(f"{t.ljust(20)} | {' | '.join(row)}")
+#     print("Knockout Stage Probabilities (Top 20 Favorites)")
+#     print("Team".ljust(20) + " | R32   | R16   | QF    | SF    | Final | Winner")
+#     print("-" * 75)
+#     all_teams = [t for g, teams in groups.items() for t in teams]
+#     sorted_overall = sorted(all_teams, key=lambda t: ko_counts[t]["Winner"], reverse=True)
+#     for t in sorted_overall[:20]:
+#         row = []
+#         for r in ["Round of 32", "Round of 16", "Quarterfinals", "Semifinals", "Final", "Winner"]:
+#             prob = ko_counts[t].get(r, 0) / num_sims
+#             row.append(f"{prob:.1%}".ljust(5))
+#         print(f"{t.ljust(20)} | {' | '.join(row)}")
     
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
