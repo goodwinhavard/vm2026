@@ -26,7 +26,7 @@ def load_fifa_ranks(rank_file=None):
 
 def train_poisson_model(matches_df, fifa_rank_file=None):
     """
-    Fit a Poisson model on played matches with FIFA rank as a covariate.
+    Fit a Poisson model on played matches with FIFA rank as optional covariate.
     Returns (model_dict, error_message). On success error_message is None.
     """
     df = matches_df.copy()
@@ -50,30 +50,53 @@ def train_poisson_model(matches_df, fifa_rank_file=None):
     home_goals = df['Home Score'].values
     away_goals = df['Away Score'].values
 
-    # Load FIFA ranks
-    fifa_ranks_dict = load_fifa_ranks(fifa_rank_file)
-    # Create normalized rank array: teams not in list get 1000, then normalize to mean 0
-    team_ranks = np.array([fifa_ranks_dict.get(t, 1000) for t in teams], dtype=float)
-    team_ranks_norm = (team_ranks - team_ranks.mean()) / team_ranks.std()  # standardize
+    # Load FIFA ranks if provided
+    use_fifa_rank = fifa_rank_file is not None and os.path.exists(fifa_rank_file)
+    team_ranks = None
+    team_ranks_norm = None
+    
+    if use_fifa_rank:
+        fifa_ranks_dict = load_fifa_ranks(fifa_rank_file)
+        # Create normalized rank array: teams not in list get 1000, then normalize to mean 0
+        team_ranks = np.array([fifa_ranks_dict.get(t, 1000) for t in teams], dtype=float)
+        team_ranks_norm = (team_ranks - team_ranks.mean()) / team_ranks.std()  # standardize
 
-    def unpack(params):
-        home_adv = params[0]
-        attack   = np.concatenate([[0.0], params[1:n]])
-        defense  = params[n:2*n]
-        beta_rank = params[2*n]
-        return home_adv, attack, defense, beta_rank
+    if use_fifa_rank:
+        def unpack(params):
+            home_adv = params[0]
+            attack   = np.concatenate([[0.0], params[1:n]])
+            defense  = params[n:2*n]
+            beta_rank = params[2*n]
+            return home_adv, attack, defense, beta_rank
 
-    def neg_log_likelihood(params):
-        home_adv, attack, defense, beta_rank = unpack(params)
-        lam_home = np.exp(home_adv + attack[home_idx] + defense[away_idx] + 
-                          beta_rank * team_ranks_norm[home_idx])
-        lam_away = np.exp(           attack[away_idx] + defense[home_idx] + 
-                          beta_rank * team_ranks_norm[away_idx])
-        ll = (poisson.logpmf(home_goals, lam_home) +
-              poisson.logpmf(away_goals, lam_away))
-        return -ll.sum()
+        def neg_log_likelihood(params):
+            home_adv, attack, defense, beta_rank = unpack(params)
+            lam_home = np.exp(home_adv + attack[home_idx] + defense[away_idx] + 
+                              beta_rank * team_ranks_norm[home_idx])
+            lam_away = np.exp(           attack[away_idx] + defense[home_idx] + 
+                              beta_rank * team_ranks_norm[away_idx])
+            ll = (poisson.logpmf(home_goals, lam_home) +
+                  poisson.logpmf(away_goals, lam_away))
+            return -ll.sum()
 
-    n_params = 1 + (n - 1) + n + 1  # home_adv + (n-1) attacks + n defenses + beta_rank
+        n_params = 1 + (n - 1) + n + 1  # home_adv + (n-1) attacks + n defenses + beta_rank
+    else:
+        def unpack(params):
+            home_adv = params[0]
+            attack   = np.concatenate([[0.0], params[1:n]])
+            defense  = params[n:2*n]
+            return home_adv, attack, defense
+
+        def neg_log_likelihood(params):
+            home_adv, attack, defense = unpack(params)
+            lam_home = np.exp(home_adv + attack[home_idx] + defense[away_idx])
+            lam_away = np.exp(           attack[away_idx] + defense[home_idx])
+            ll = (poisson.logpmf(home_goals, lam_home) +
+                  poisson.logpmf(away_goals, lam_away))
+            return -ll.sum()
+
+        n_params = 1 + (n - 1) + n  # home_adv + (n-1) attacks + n defenses
+
     x0       = np.zeros(n_params)
     result   = minimize(neg_log_likelihood, x0, method='L-BFGS-B',
                         options={'maxiter': 1000, 'ftol': 1e-12})
@@ -81,7 +104,12 @@ def train_poisson_model(matches_df, fifa_rank_file=None):
     if not (result.success or result.fun < neg_log_likelihood(x0)):
         return None, result.message
 
-    home_adv, attack, defense, beta_rank = unpack(result.x)
+    if use_fifa_rank:
+        home_adv, attack, defense, beta_rank = unpack(result.x)
+    else:
+        home_adv, attack, defense = unpack(result.x)
+        beta_rank = None
+
     model = {
         'teams':         teams,
         'team_idx':      team_idx,

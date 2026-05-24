@@ -1,0 +1,72 @@
+Mexico	South Africa
+South Korea	Czech Republic
+Canada	Bosnia and Herzegovina
+United States	Paraguay
+Haiti	Scotland
+Australia	Turkey
+Brazil	Morocco
+Qatar	Switzerland
+Ivory Coast	Ecuador
+Germany	Curacao
+Netherlands	Japan
+Sweden	Tunisia
+Saudi Arabia	Uruguay
+Spain	Cape Verde
+Iran	New Zealand
+Belgium	Egypt
+France	Senegal
+Iraq	Norway
+Argentina	Algeria
+Austria	Jordan
+Ghana	Panama
+England	Croatia
+Portugal	DR Congo
+Uzbekistan	Colombia
+Czech Republic	South Africa
+Switzerland	Bosnia and Herzegovina
+Canada	Qatar
+Mexico	South Korea
+Brazil	Haiti
+Scotland	Morocco
+United States	Australia
+Turkey	Paraguay
+Germany	Ivory Coast
+Ecuador	Curacao
+Netherlands	Sweden
+Tunisia	Japan
+Uruguay	Cape Verde
+Spain	Saudi Arabia
+Belgium	Iran
+New Zealand	Egypt
+Norway	Senegal
+France	Iraq
+Argentina	Austria
+Jordan	Algeria
+England	Ghana
+Panama	Croatia
+Portugal	Uzbekistan
+Colombia	DR Congo
+Scotland	Brazil
+Morocco	Haiti
+Switzerland	Canada
+Bosnia and Herzegovina	Qatar
+Czech Republic	Mexico
+South Africa	South Korea
+Curacao	Ivory Coast
+Ecuador	Germany
+Japan	Sweden
+Tunisia	Netherlands
+Turkey	United States
+Paraguay	Australia
+Norway	France
+Senegal	Iraq
+Egypt	Iran
+New Zealand	Belgium
+Cape Verde	Saudi Arabia
+Uruguay	Spain
+Panama	England
+Croatia	Ghana
+Algeria	Austria
+Jordan	Argentina
+Colombia	Portugal
+DR Congo	Uzbekistan

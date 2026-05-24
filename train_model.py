@@ -56,7 +56,9 @@ def main():
     df = df.rename(columns=mapping)
 
     rank_file = os.path.join(os.path.dirname(__file__), 'data', 'fifa_rank.txt')
-    model, err = train_poisson_model(df, fifa_rank_file=rank_file)
+    #model, err = train_poisson_model(df, fifa_rank_file=rank_file)
+
+    model, err = train_poisson_model(df)
     if err:
         print('Training failed:', err)
         return
@@ -68,14 +70,19 @@ def main():
     print('Saved model to', out_path)
     print('Teams:', len(model['teams']))
     print('Home advantage:', model['home_adv'])
-    print('FIFA Rank coefficient:', model['beta_rank'])
-    # show top 5 attack strengths
+    if model['beta_rank'] is not None:
+        print('FIFA Rank coefficient:', model['beta_rank'])
+    else:
+        print('FIFA Rank coefficient: Not used')
+    # show all attack and defense strengths
     attacks = list(zip(model['teams'], model['attack']))
     defenses = list(zip(model['teams'], model['defense']))
     attacks.sort(key=lambda x: x[1], reverse=True)
     defenses.sort(key=lambda x: x[1])
-    print('Top 5 attacks:', attacks[:5])
-    print('Top 5 (weakest) defenses:', defenses[:5])
+    #print('All attacks:', attacks)
+    for a in attacks:
+        print(f"Team: {a[0]}, Attack strength: {a[1]:.3f}")
+    #print('All defenses:', defenses)
 
 
 if __name__ == '__main__':

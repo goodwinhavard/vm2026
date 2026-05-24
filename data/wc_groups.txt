@@ -10,7 +10,7 @@ Group C: Brazil
 Group C: Morocco
 Group C: Haiti
 Group C: Scotland
-Group D: United States (H)
+Group D: United States
 Group D: Paraguay
 Group D: Australia
 Group D: Turkey

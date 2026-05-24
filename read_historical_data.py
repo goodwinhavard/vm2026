@@ -33,6 +33,8 @@ vm_historical_matches_df[['home_team', 'away_team']] = vm_historical_matches_df[
     {'East Germany': 'Germany', 'West Germany': 'Germany', 'Czech Republic': 'Czechia'}
 )
 
+
+# Leser inn kvalikkdata (hentet manuelt)
 vm_kvalikk_2026 = pd.read_csv(os.path.join(DATA_DIR, "vm_kvalikk.csv"), header=0)
 vm_kvalikk_2026.columns = vm_kvalikk_2026.columns.str.strip()
 vm_kvalikk_2026 = vm_kvalikk_2026[['home_team', 'away_team', 'home_goal', 'away_goal']]
