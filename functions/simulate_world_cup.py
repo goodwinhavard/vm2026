@@ -7,7 +7,7 @@ from tournament_config import GROUPS, KNOCKOUT_DEFS
 
 # Use relative paths for the project structure so it works on both local and server
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
+DATA_DIR = os.path.join(os.path.dirname(BASE_DIR), "data")
 MODEL_PATH = os.path.join(BASE_DIR, "poisson_model.pkl")
 MATCHES_FILE = os.path.join(DATA_DIR, "wc_group_matches.txt")
 
@@ -59,7 +59,6 @@ def load_matches():
         raise FileNotFoundError(f"Matches file not found: {MATCHES_FILE}")
     with open(MATCHES_FILE, 'r', encoding='utf-8') as f:
         for line in f:
-            # Matches are tab-separated as per wc_group_matches.txt
             parts = line.strip().split('\t')
             if len(parts) == 2:
                 matches.append((parts[0].strip(), parts[1].strip()))
@@ -88,12 +87,14 @@ def predict_score(home_team, away_team, model):
 def simulate_group_stage(groups, matches, team_to_group, model):
     # Initialize table stats for each team
     standings = {g: {t: {'pts': 0, 'gd': 0, 'gf': 0} for t in teams} for g, teams in groups.items()}
+    match_results = []
     
     for t1, t2 in matches:
         g = team_to_group.get(t1)
         if not g: continue
         
         s1, s2 = predict_score(t1, t2, model)
+        match_results.append((t1, t2, s1, s2))
         
         standings[g][t1]['gf'] += s1
         standings[g][t1]['gd'] += (s1 - s2)
@@ -113,7 +114,7 @@ def simulate_group_stage(groups, matches, team_to_group, model):
         # Standard tie-breakers: Points, Goal Difference, Goals For
         sorted_teams = sorted(table.items(), key=lambda x: (x[1]['pts'], x[1]['gd'], x[1]['gf']), reverse=True)
         group_rankings[g] = [t for t, stats in sorted_teams]
-    return standings, group_rankings
+    return standings, group_rankings, match_results
 
 def simulate_knockout_stage(standings, group_rankings, model):
     match_winners, used_thirds, reached = {}, set(), []
@@ -137,18 +138,27 @@ def run_full_simulation(num_sims=1000, model=None):
     # Track finishing positions for each team in each group
     pos_counts = {g: {t: [0]*4 for t in teams} for g, teams in groups.items()}
     ko_counts = {t: defaultdict(int) for g, teams in groups.items() for t in teams}
+    match_outcomes = defaultdict(lambda: [0, 0, 0]) # [Home Win, Draw, Away Win]
 
     for _ in range(num_sims):
-        standings, sim_rankings = simulate_group_stage(groups, matches, team_to_group, model)
+        standings, sim_rankings, results = simulate_group_stage(groups, matches, team_to_group, model)
         for g, ranked_teams in sim_rankings.items():
             for i, t in enumerate(ranked_teams):
                 if i < 4: pos_counts[g][t][i] += 1
+
+        for t1, t2, s1, s2 in results:
+            if s1 > s2:
+                match_outcomes[(t1, t2)][0] += 1
+            elif s1 == s2:
+                match_outcomes[(t1, t2)][1] += 1
+            else:
+                match_outcomes[(t1, t2)][2] += 1
 
         reached = simulate_knockout_stage(standings, sim_rankings, model)
         for (team, round_label) in reached:
             if team != "TBD": ko_counts[team][round_label] += 1
             
-    return groups, pos_counts, ko_counts
+    return groups, pos_counts, ko_counts, match_outcomes
 
 # def main():
 #     num_sims = 1000

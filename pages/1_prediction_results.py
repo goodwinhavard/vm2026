@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import os
-from train_poisson_model import train_poisson_model
-from simulate_world_cup import run_full_simulation
+from functions.train_poisson_model import train_poisson_model
+from functions.simulate_world_cup import run_full_simulation
 
 st.set_page_config(page_title="World Cup 2026 Simulation", layout="wide")
 
@@ -38,10 +39,26 @@ def train_and_save_model():
         expected_cols = ['home_team', 'away_team', 'home_goal', 'away_goal']
         if not set(expected_cols).issubset(custom_df.columns):
             missing = sorted(set(expected_cols) - set(custom_df.columns))
-            return None, f"custom_matches.csv is missing required columns: {missing}"
+            return None, f"custom_matches_manuell.csv is missing required columns: {missing}"
         
         custom_df = custom_df[expected_cols]
+        
+        # Calculate weights for 70% real / 30% synthetic split
+        n_real = len(df)
+        n_syn = len(custom_df)
+        total = n_real + n_syn
+        
+        df['Weight'] = 0.4
+        custom_df['Weight'] = 0.6#(0.5 * total) / n_syn
+
+        # Normalize weights so they sum to the total number of matches
+        total_weight = df['Weight'].sum() + custom_df['Weight'].sum()
+        df['Weight'] = df['Weight'] * (total / total_weight)
+        custom_df['Weight'] = custom_df['Weight'] * (total / total_weight)
+                
+
         df = pd.concat([df, custom_df], ignore_index=True, sort=False)
+        #df = custom_df
     
     # Rename columns to match the trainer's expectations
     mapping = {
@@ -58,6 +75,15 @@ def train_and_save_model():
     
     return model, None
 
+@st.cache_data
+def get_simulation_results(num_sims, _model):
+    """Run the simulation and cache the results."""
+    groups, pos_counts, ko_counts, match_outcomes = run_full_simulation(num_sims, model=_model)
+    # Convert defaultdicts to standard dicts for clean caching serialization
+    ko_counts_clean = {team: dict(rounds) for team, rounds in ko_counts.items()}
+    match_outcomes_clean = dict(match_outcomes)
+    return groups, pos_counts, ko_counts_clean, match_outcomes_clean
+
 st.title("🏆 World Cup 2026 Predictions")
 st.markdown("""
 This page shows the probabilities of each team reaching various stages of the 2026 World Cup, 
@@ -71,13 +97,13 @@ with st.spinner("Training Poisson model..."):
         st.error(f"Model training failed: {err}")
         st.stop()
     
-st.success(f"✓ Model trained on {len(model['teams'])} teams")
+#st.success(f"✓ Model trained on {len(model['teams'])} teams")
 
 num_sims = 10000
 
 
 with st.spinner(f"Running {num_sims} tournament simulations..."):
-    groups, pos_counts, ko_counts = run_full_simulation(num_sims, model=model)
+    groups, pos_counts, ko_counts, match_outcomes = get_simulation_results(num_sims, model)
     
 st.subheader("Top 5 Favorites to Win")
 all_teams_list = [team for group in groups.values() for team in group]
@@ -141,3 +167,36 @@ if not df_ko.empty:
         use_container_width=True,
         height=600
     )
+
+st.divider()
+st.header("3. Group Match Probabilities")
+st.write("Outcome probabilities for all 72 group stage matches based on the simulation.")
+
+# Filter by team
+team_options = ["All teams"] + sorted(all_teams_list)
+selected_team = st.selectbox("Filter matches by team:", options=team_options)
+
+match_data = []
+for (t1, t2), counts in match_outcomes.items():
+    if selected_team == "All teams" or t1 == selected_team or t2 == selected_team:
+        match_data.append({
+            "Home Team": t1,
+            "Away Team": t2,
+            "Home Win %": counts[0] / num_sims,
+            "Draw %": counts[1] / num_sims,
+            "Away Win %": counts[2] / num_sims
+        })
+
+if match_data:
+    df_display = pd.DataFrame(match_data)
+    st.dataframe(
+        df_display.style.format({
+            "Home Win %": "{:.1%}",
+            "Draw %": "{:.1%}",
+            "Away Win %": "{:.1%}"
+        }),
+        use_container_width=True,
+        hide_index=True
+    )
+else:
+    st.info("No matches found for the selected team.")

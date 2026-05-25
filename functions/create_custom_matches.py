@@ -7,6 +7,8 @@ import random
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 os.makedirs(DATA_DIR, exist_ok=True)
 
+## Create custom matches based on FIFA rankings and Poisson distribution
+
 # Read FIFA ranking and team ratings
 teams_data = []
 with open(os.path.join(DATA_DIR, 'fifa_rank.txt'), 'r', encoding='utf-8') as f:

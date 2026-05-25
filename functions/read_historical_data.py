@@ -44,8 +44,9 @@ combined_df = pd.concat([vm_historical_matches_df, vm_kvalikk_2026], ignore_inde
 print("Combined dataset shape:", combined_df.shape)
 print(combined_df.head())
 
-with open(os.path.join(DATA_DIR, "wc_teams.txt"), "r", encoding="utf-8") as f:
-    wc_teams_2026 = [line.strip() for line in f if line.strip()]
+fifa_rank_path = os.path.join(DATA_DIR, "fifa_rank.txt")
+wc_teams_rank_df = pd.read_csv(fifa_rank_path, sep='\t', header=None, encoding='utf-8')
+wc_teams_2026 = wc_teams_rank_df[0].str.strip().tolist()
 
 print("World Cup 2026 teams:", wc_teams_2026)
 
@@ -58,7 +59,3 @@ print(len(sub_version))
 print(sub_version.head())
 
 sub_version.to_csv(os.path.join(DATA_DIR, "training_data_fra_kvalikk_og_hist.csv"), index=False)
-
-
-
-

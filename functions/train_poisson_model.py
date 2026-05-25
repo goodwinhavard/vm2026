@@ -50,6 +50,8 @@ def train_poisson_model(matches_df, fifa_rank_file=None):
     home_goals = df['Home Score'].values
     away_goals = df['Away Score'].values
 
+    weights = df['Weight'].values if 'Weight' in df.columns else np.ones(len(df))
+
     # Load FIFA ranks if provided
     use_fifa_rank = fifa_rank_file is not None and os.path.exists(fifa_rank_file)
     team_ranks = None
@@ -77,7 +79,7 @@ def train_poisson_model(matches_df, fifa_rank_file=None):
                               beta_rank * team_ranks_norm[away_idx])
             ll = (poisson.logpmf(home_goals, lam_home) +
                   poisson.logpmf(away_goals, lam_away))
-            return -ll.sum()
+            return -np.sum(ll * weights)
 
         n_params = 1 + (n - 1) + n + 1  # home_adv + (n-1) attacks + n defenses + beta_rank
     else:
@@ -93,7 +95,7 @@ def train_poisson_model(matches_df, fifa_rank_file=None):
             lam_away = np.exp(           attack[away_idx] + defense[home_idx])
             ll = (poisson.logpmf(home_goals, lam_home) +
                   poisson.logpmf(away_goals, lam_away))
-            return -ll.sum()
+            return -np.sum(ll * weights)
 
         n_params = 1 + (n - 1) + n  # home_adv + (n-1) attacks + n defenses
 
