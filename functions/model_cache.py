@@ -41,8 +41,8 @@ def train_and_save_model():
         n_syn = len(custom_df)
         total = n_real + n_syn
 
-        df['Weight'] = 0.4
-        custom_df['Weight'] = 0.6
+        df['Weight'] = 0.6
+        custom_df['Weight'] = 0.4
 
         total_weight = df['Weight'].sum() + custom_df['Weight'].sum()
         df['Weight'] = df['Weight'] * (total / total_weight)

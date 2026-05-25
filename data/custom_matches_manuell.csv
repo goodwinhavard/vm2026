@@ -8,7 +8,7 @@ Cape Verde,New Zealand,1,1
 Tunisia,Brazil,1,2
 Qatar,Norway,1,2
 Argentina,Spain,2,3
-Brazil,Mexico,1,0
+Brazil,Mexico,3,0
 United States,Czech Republic,2,1
 Iraq,Spain,1,2
 Congo DR,Senegal,1,0
@@ -39,7 +39,7 @@ Algeria,Switzerland,2,1
 Ivory Coast,Saudi Arabia,2,0
 Australia,Croatia,1,0
 Australia,South Korea,0,2
-Mexico,Bosnia and Herzegovina,1,1
+Mexico,Bosnia and Herzegovina,2,1
 Switzerland,Ghana,1,1
 Cape Verde,Jordan,0,0
 Portugal,Iraq,2,0
@@ -54,9 +54,9 @@ Ecuador,England,1,1
 United States,Argentina,1,2
 Ecuador,Egypt,3,1
 Switzerland,Portugal,0,1
-Mexico,Uzbekistan,0,1
+Mexico,Uzbekistan,2,1
 Curacao,Ecuador,3,0
-Mexico,Jordan,1,1
+Mexico,Jordan,2,1
 Paraguay,Egypt,1,3
 Jordan,Ivory Coast,0,2
 Germany,Japan,3,1
@@ -106,7 +106,7 @@ Belgium,Bosnia and Herzegovina,0,0
 Sweden,Congo DR,2,2
 Croatia,Japan,1,1
 Scotland,Iraq,1,3
-Norway,Mexico,2,2
+Norway,Mexico,3,2
 Tunisia,Haiti,3,0
 Ghana,Senegal,3,1
 Curacao,Turkey,1,1
@@ -126,7 +126,7 @@ Portugal,Argentina,1,1
 Austria,Portugal,0,1
 Czech Republic,Uruguay,2,2
 Switzerland,Bosnia and Herzegovina,2,0
-Paraguay,Mexico,1,0
+Paraguay,Mexico,1,1
 Tunisia,Belgium,0,0
 Haiti,Uzbekistan,0,0
 Uzbekistan,Sweden,1,2
@@ -162,7 +162,7 @@ Ghana,Haiti,0,0
 Congo DR,Bosnia and Herzegovina,0,1
 Curacao,Paraguay,1,3
 Germany,Senegal,1,3
-Iran,Mexico,2,0
+Iran,Mexico,1,2
 England,Qatar,3,1
 New Zealand,Tunisia,0,0
 England,New Zealand,3,1
@@ -182,7 +182,7 @@ South Africa,Brazil,0,2
 Canada,Bosnia and Herzegovina,3,0
 Qatar,Uzbekistan,2,3
 Scotland,Ecuador,1,1
-Japan,Mexico,0,1
+Japan,Mexico,1,1
 Bosnia and Herzegovina,Curacao,2,0
 Ecuador,Uruguay,2,1
 Japan,Egypt,0,1
@@ -193,7 +193,7 @@ Portugal,France,1,1
 Ivory Coast,South Africa,0,0
 Uzbekistan,Netherlands,1,0
 Portugal,Tunisia,2,1
-Mexico,Czech Republic,1,0
+Mexico,Czech Republic,1,2
 Japan,Belgium,3,2
 South Korea,Portugal,0,2
 Uruguay,Australia,0,0
@@ -209,7 +209,6 @@ Japan,Morocco,0,1
 Netherlands,New Zealand,1,1
 Congo DR,Germany,1,2
 Switzerland,Iran,4,0
-Iraq,Mexico,0,2
 Curacao,Austria,0,3
 Mexico,Cape Verde,1,1
 Saudi Arabia,Japan,1,3
@@ -240,7 +239,7 @@ Canada,South Africa,1,5
 New Zealand,Germany,1,4
 Uruguay,Croatia,1,1
 Colombia,Canada,0,1
-Spain,Colombia,1,0
+Spain,Colombia,1,1
 New Zealand,Austria,0,2
 Canada,Bosnia and Herzegovina,1,2
 New Zealand,Uruguay,1,3
@@ -270,7 +269,7 @@ Morocco,Algeria,1,1
 Uzbekistan,Senegal,4,1
 Japan,Argentina,0,1
 Curacao,Norway,2,0
-France,Scotland,2,0
+France,Scotland,2,2
 Tunisia,Cape Verde,2,0
 Haiti,New Zealand,2,1
 New Zealand,Bosnia and Herzegovina,2,1
@@ -292,7 +291,6 @@ Colombia,South Africa,1,1
 Uzbekistan,Turkey,0,1
 Egypt,Congo DR,3,0
 France,Turkey,2,1
-Iran,Mexico,1,3
 Norway,Qatar,3,1
 Iraq,Jordan,3,2
 Ecuador,Ivory Coast,0,0
@@ -350,7 +348,6 @@ Portugal,Canada,0,4
 Canada,Austria,0,0
 Tunisia,Ivory Coast,1,2
 Canada,England,0,1
-Mexico,Canada,2,0
 Algeria,Qatar,1,1
 Ghana,Spain,2,0
 Uzbekistan,Algeria,0,2
@@ -435,7 +432,7 @@ South Africa,Bosnia and Herzegovina,1,2
 Algeria,Austria,1,1
 Spain,Paraguay,1,0
 Ecuador,Colombia,4,2
-Paraguay,Mexico,0,2
+Paraguay,Mexico,0,1
 South Korea,Japan,2,1
 Austria,Switzerland,0,0
 Iraq,Ghana,1,1
@@ -507,7 +504,7 @@ Cape Verde,New Zealand,0,0
 Tunisia,Brazil,0,2
 Qatar,Norway,0,3
 Argentina,Spain,2,2
-Brazil,Mexico,2,1
+Brazil,Mexico,2,0
 United States,Czech Republic,1,2
 Iraq,Spain,1,3
 Congo DR,Senegal,1,2
@@ -515,11 +512,11 @@ Curacao,Jordan,2,1
 Ghana,Tunisia,2,0
 Canada,United States,0,1
 Panama,Qatar,0,0
-Switzerland,France,0,1
+Switzerland,France,1,1
 Croatia,Ghana,1,0
 Norway,Austria,1,1
 Switzerland,Germany,1,2
-Mexico,Austria,1,0
+Mexico,Austria,1,2
 Netherlands,Brazil,0,1
 Algeria,Netherlands,0,2
 South Korea,Iraq,2,0
@@ -554,9 +551,9 @@ Ecuador,England,0,2
 United States,Argentina,0,2
 Ecuador,Egypt,1,0
 Switzerland,Portugal,0,1
-Mexico,Uzbekistan,1,0
+Mexico,Uzbekistan,1,1
 Curacao,Ecuador,0,1
-Mexico,Jordan,1,0
+Mexico,Jordan,1,1
 Paraguay,Egypt,0,1
 Jordan,Ivory Coast,0,1
 Germany,Japan,1,0
@@ -592,12 +589,13 @@ Saudi Arabia,Czech Republic,0,1
 Iraq,Senegal,0,1
 Germany,Australia,1,0
 Croatia,Tunisia,2,0
-Scotland,France,2,2
+Scotland,France,1,2
 Iraq,Ecuador,0,1
 Paraguay,Spain,0,1
 Morocco,Australia,1,0
 Turkey,Uruguay,1,1
 England,Uruguay,1,0
+Uzbekistan,Brazil,0,2
 Brazil,Haiti,1,0
 Paraguay,Portugal,0,1
 Tunisia,Belgium,0,1
@@ -606,3 +604,392 @@ Sweden,Congo DR,1,1
 Croatia,Japan,1,1
 Scotland,Iraq,1,1
 Norway,Mexico,2,1
+Tunisia,Haiti,0,0
+Ghana,Senegal,0,1
+Curacao,Turkey,0,1
+Egypt,Bosnia and Herzegovina,1,1
+Jordan,Australia,1,1
+Panama,Scotland,1,2
+Panama,Morocco,1,2
+Uruguay,United States,1,0
+Portugal,Austria,1,0
+Spain,Qatar,2,0
+Congo DR,United States,1,1
+Qatar,United States,1,2
+France,Portugal,2,1
+Curacao,Saudi Arabia,1,2
+England,United States,2,0
+Portugal,Argentina,1,2
+Austria,Portugal,1,2
+Czech Republic,Uruguay,1,2
+Switzerland,Bosnia and Herzegovina,1,0
+Paraguay,Mexico,0,0
+Tunisia,Belgium,0,1
+Haiti,Uzbekistan,0,0
+Uzbekistan,Sweden,0,1
+Uruguay,Sweden,1,1
+Canada,Senegal,1,1
+Netherlands,Bosniaand Herzegovina,1,0
+Norway,South Korea,1,0
+Norway,Canada,1,0
+Ivory Coast,Haiti,1,0
+England,Cape Verde,1,0
+Jordan,Netherlands,0,1
+England,Egypt,1,0
+Haiti,Austria,1,1
+Netherlands,Uruguay,1,1
+Senegal,Tunisia,1,0
+Panama,Belgium,0,1
+Norway,Colombia,1,1
+Switzerland,Ivory Coast,0,1
+Uruguay,Portugal,2,2
+Panama,Congo DR,0,0
+Netherlands,England,1,1
+Jordan,Tunisia,0,1
+France,Brazil,1,1
+Uruguay,Croatia,0,0
+Canada,Paraguay,0,0
+Sweden,Mexico,2,1
+Egypt,England,1,1
+Croatia,Algeria,1,1
+France,Algeria,1,1
+Japan,Ivory Coast,1,0
+Iran,Norway,0,1
+Ghana,Haiti,1,0
+Congo DR,Bosnia and Herzegovina,0,1
+Curacao,Paraguay,1,0
+Germany,Senegal,2,1
+Iran,Mexico,0,1
+England,Qatar,1,0
+New Zealand,Tunisia,0,0
+England,New Zealand,1,0
+Ecuador,England,2,2
+England,Qatar,2,0
+Sweden,Czech Republic,1,0
+Scotland,Croatia,0,1
+England,Czech Republic,1,0
+Brazil,Colombia,1,0
+Portugal,Iraq,1,0
+Portugal,Cape Verde,1,0
+Uruguay,Egypt,1,0
+Morocco,Uzbekistan,2,0
+Uruguay,Qatar,1,0
+Iraq,Argentina,1,1
+South Africa,Brazil,1,1
+Canada,Bosnia and Herzegovina,1,0
+Qatar,Uzbekistan,1,0
+Scotland,Ecuador,1,1
+Japan,Mexico,1,2
+Bosnia and Herzegovina,Curacao,1,0
+Ecuador,Uruguay,0,1
+Japan,Egypt,0,1
+Belgium,Bosnia and Herzegovina,1,1
+Jordan,Turkey,1,1
+Ivory Coast,Ecuador,1,1
+Portugal,France,0,0
+Ivory Coast,South Africa,0,0
+Uzbekistan,Netherlands,0,1
+Portugal,Tunisia,1,0
+Mexico,Czech Republic,2,0
+Japan,Belgium,0,1
+South Korea,Portugal,1,0
+Uruguay,Australia,1,0
+Iran,Croatia,0,1
+Panama,Tunisia,0,1
+Curacao,Turkey,1,1
+South Africa,Jordan,1,0
+Scotland,France,0,1
+Bosnia and Herzegovina,Congo DR,2,0
+Turkey,Bosnia and Herzegovina,1,0
+Netherlands,Belgium,1,0
+Japan,Morocco,1,2
+Netherlands,New Zealand,3,0
+Congo DR,Germany,0,2
+Switzerland,Iran,2,0
+Iraq,Mexico,0,1
+Curacao,Austria,0,2
+Mexico,Cape Verde,2,0
+Saudi Arabia,Japan,0,1
+Czech Republic,Paraguay,0,0
+Japan,England,0,2
+Brazil,Saudi Arabia,2,0
+Norway,Switzerland,2,2
+Argentina,France,2,2
+Austria,Belgium,1,1
+Saudi Arabia,Japan,1,1
+Croatia,New Zealand,1,1
+Panama,Congo DR,1,0
+Curacao,Norway,0,1
+Congo DR,France,0,1
+Morocco,Portugal,1,0
+Ghana,Germany,1,0
+Tunisia,Argentina,1,0
+Australia,Qatar,0,0
+Congo DR,Germany,0,0
+Norway,Belgium,0,2
+Argentina,Turkey,1,0
+Australia,Argentina,0,2
+South Korea,Mexico,2,2
+Cape Verde,Uruguay,0,1
+Bosnia and Herzegovina,Netherlands,0,1
+South Korea,Congo DR,1,0
+Canada,South Africa,1,1
+New Zealand,Germany,0,1
+Uruguay,Croatia,1,1
+Colombia,Canada,1,0
+Spain,Colombia,2,2
+New Zealand,Austria,0,1
+Canada,Bosnia and Herzegovina,1,0
+New Zealand,Uruguay,0,1
+Switzerland,Croatia,1,0
+Ghana,Netherlands,0,1
+Algeria,Argentina,0,2
+Sweden,United States,2,1
+Senegal,Ivory Coast,1,0
+South Korea,Turkey,1,0
+United States,Spain,1,2
+Bosnia and Herzegovina,Senegal,0,2
+Egypt,Austria,1,1
+Switzerland,Portugal,1,1
+Switzerland,South Korea,1,1
+Jordan,Czech Republic,0,1
+Egypt,Cape Verde,2,0
+Tunisia,Austria,1,1
+Spain,Morocco,1,0
+Japan,Colombia,1,0
+Qatar,Japan,0,0
+Argentina,Netherlands,1,1
+Iraq,Norway,0,2
+South Korea,Haiti,1,0
+Ecuador,Norway,1,2
+Iraq,Czech Republic,1,0
+Morocco,Algeria,1,0
+Uzbekistan,Senegal,0,1
+Japan,Argentina,0,1
+Curacao,Norway,0,3
+France,Scotland,2,1
+Tunisia,Cape Verde,0,1
+Haiti,New Zealand,1,1
+New Zealand,Bosnia and Herzegovina,1,1
+Senegal,Australia,1,1
+Norway,Portugal,0,2
+Bosnia and Herzegovina,Austria,0,1
+South Africa,Ecuador,1,0
+Bosnia and Herzegovina,Morocco,1,1
+Haiti,Turkey,0,0
+Czech Republic,Turkey,1,1
+Bosnia and Herzegovina,Canada,1,1
+Ecuador,Egypt,0,0
+Ghana,Iran,1,0
+Congo DR,Belgium,0,1
+Senegal,Canada,1,0
+Bosnia and Herzegovina,Algeria,1,1
+Cape Verde,New Zealand,1,1
+Colombia,South Africa,0,1
+Uzbekistan,Turkey,1,2
+Egypt,Congo DR,1,0
+France,Turkey,1,0
+Iran,Mexico,0,1
+Norway,Qatar,1,0
+Iraq,Jordan,0,0
+Ecuador,Ivory Coast,0,1
+Panama,Cape Verde,0,0
+Mexico,Czech Republic,2,1
+Sweden,New Zealand,0,0
+Croatia,Bosnia and Herzegovina,1,0
+Brazil,Iran,1,0
+Czech Republic,Bosnia and Herzegovina,1,0
+Saudi Arabia,South Africa,0,1
+Austria,Brazil,0,1
+Uruguay,Cape Verde,1,0
+Turkey,United States,1,0
+Senegal,Germany,1,1
+Spain,Argentina,1,1
+Uruguay,Sweden,0,1
+South Africa,Portugal,1,1
+Ivory Coast,Canada,1,0
+Saudi Arabia,Uzbekistan,1,0
+Senegal,Curacao,2,0
+Ghana,Algeria,2,1
+Paraguay,Egypt,0,1
+Uruguay,Germany,0,2
+Jordan,Ghana,0,2
+France,Netherlands,2,0
+Norway,United States,2,0
+Colombia,Ghana,1,0
+Scotland,Ivory Coast,2,3
+England,Congo DR,2,0
+Uruguay,Morocco,1,1
+Ivory Coast,Belgium,1,1
+Ivory Coast,Bosnia and Herzegovina,1,2
+Scotland,Congo DR,1,0
+Iraq,Ecuador,1,1
+Panama,South Africa,0,1
+Haiti,Czech Republic,0,1
+Norway,Congo DR,1,0
+Panama,Croatia,0,1
+New Zealand,Sweden,0,1
+Panama,Japan,0,1
+Uruguay,Saudi Arabia,2,0
+Switzerland,Scotland,1,0
+Paraguay,Saudi Arabia,1,0
+Uruguay,Switzerland,1,0
+Panama,Portugal,0,1
+Curacao,Iran,0,0
+Uruguay,Switzerland,0,0
+Austria,Ecuador,0,0
+Tunisia,Brazil,0,1
+Belgium,Germany,0,1
+United States,Algeria,1,1
+Ghana,Germany,0,1
+Curacao,Mexico,0,1
+Portugal,Canada,2,2
+Canada,Austria,0,1
+Tunisia,Ivory Coast,1,1
+Canada,England,0,1
+Mexico,Canada,1,0
+Algeria,Qatar,0,0
+Ghana,Spain,0,1
+Uzbekistan,Algeria,0,1
+Sweden,France,1,1
+South Korea,Turkey,1,1
+Algeria,Canada,0,0
+Tunisia,New Zealand,0,0
+New Zealand,Tunisia,0,1
+Iraq,United States,0,1
+Paraguay,United States,1,1
+Switzerland,Norway,1,1
+Paraguay,Spain,1,2
+Algeria,Austria,1,1
+Bosnia and Herzegovina,Cape Verde,1,1
+Egypt,Haiti,0,0
+Croatia,Ivory Coast,2,1
+Belgium,South Africa,1,0
+Tunisia,Spain,1,1
+Egypt,Qatar,1,0
+Uzbekistan,Bosnia and Herzegovina,1,2
+Spain,Brazil,2,2
+Jordan,Norway,0,2
+Belgium,Ivory Coast,2,2
+Colombia,England,1,1
+Japan,Algeria,0,1
+Ecuador,Mexico,1,1
+Ivory Coast,Ecuador,1,0
+Austria,Algeria,2,0
+Switzerland,Canada,1,0
+Japan,Brazil,0,2
+Sweden,Spain,1,1
+New Zealand,Tunisia,0,1
+England,South Korea,1,1
+United States,Jordan,1,0
+Portugal,Jordan,1,0
+Argentina,Spain,1,1
+Uruguay,Senegal,0,1
+Spain,South Africa,1,0
+Germany,Uruguay,2,0
+Belgium,Sweden,2,1
+Bosnia and Herzegovina,Morocco,0,0
+Uzbekistan,Mexico,0,2
+Ivory Coast,Ghana,0,0
+Japan,Australia,0,0
+Croatia,Iraq,0,0
+Iraq,New Zealand,1,0
+Curacao,Morocco,0,1
+Croatia,Turkey,1,0
+Netherlands,Qatar,1,0
+Spain,Turkey,1,0
+Uzbekistan,Cape Verde,0,0
+Algeria,Egypt,0,0
+Curacao,Senegal,0,1
+Portugal,Qatar,0,0
+Ghana,Saudi Arabia,2,0
+Uruguay,Netherlands,2,1
+Ghana,Turkey,1,1
+Cape Verde,Iraq,0,0
+Morocco,Uzbekistan,1,1
+Argentina,South Korea,1,0
+Tunisia,Norway,0,0
+Bosnia and Herzegovina,Australia,1,0
+Portugal,Czech Republic,1,0
+Jordan,Austria,0,0
+France,Canada,2,0
+Paraguay,Netherlands,1,2
+Norway,Australia,1,0
+Saudi Arabia,Ivory Coast,0,1
+Curacao,Germany,0,2
+Norway,Spain,1,3
+Haiti,Scotland,0,0
+Jordan,Switzerland,0,1
+South Africa,Tunisia,1,1
+Sweden,Ivory Coast,1,1
+Norway,Haiti,1,0
+Qatar,Switzerland,0,0
+Ecuador,Uruguay,0,0
+Brazil,Switzerland,2,1
+Panama,Uruguay,0,0
+Ivory Coast,Uzbekistan,1,1
+South Africa,Bosnia and Herzegovina,1,1
+Algeria,Austria,1,1
+Spain,Paraguay,2,0
+Ecuador,Colombia,1,0
+South Korea,Japan,0,0
+Austria,Switzerland,0,1
+Iraq,Ghana,0,1
+Switzerland,Congo DR,1,0
+France,Scotland,2,0
+Senegal,Brazil,1,1
+Uruguay,Haiti,1,0
+Canada,Paraguay,1,0
+Congo DR,Uruguay,0,1
+Ghana,Sweden,0,1
+Jordan,Curacao,0,0
+Paraguay,Panama,0,0
+Spain,Brazil,1,0
+Iran,United States,0,1
+Egypt,Ghana,1,1
+Uruguay,Turkey,1,2
+Bosnia and Herzegovina,Qatar,1,0
+Australia,Sweden,0,1
+Congo DR,Scotland,0,1
+South Korea,Norway,0,1
+New Zealand,Congo DR,0,1
+Austria,South Korea,0,1
+Ghana,Ivory Coast,1,1
+Switzerland,Turkey,1,1
+Japan,United States,2,2
+Morocco,Haiti,1,0
+Senegal,Ecuador,1,0
+Morocco,New Zealand,1,0
+Tunisia,Ghana,1,1
+Colombia,Senegal,1,1
+Sweden,Switzerland,1,0
+Haiti,Qatar,0,1
+Scotland,Iraq,1,0
+Iran,Netherlands,0,1
+Senegal,Iran,0,0
+United States,Australia,0,1
+Colombia,Turkey,1,1
+France,Curacao,1,0
+Tunisia,Belgium,1,1
+Switzerland,Argentina,1,1
+England,Congo DR,1,0
+Iran,Ghana,1,0
+Belgium,Saudi Arabia,1,0
+Paraguay,Netherlands,1,2
+France,Uzbekistan,2,1
+Iran,Sweden,1,2
+Sweden,Panama,2,1
+Austria,Colombia,1,0
+England,Japan,2,1
+Sweden,Morocco,2,2
+Portugal,Egypt,2,1
+Paraguay,Portugal,1,2
+Uzbekistan,Saudi Arabia,1,2
+Cape Verde,England,1,2
+Germany,Uzbekistan,2,1
+Turkey,Brazil,1,2
+Uruguay,Morocco,2,1
+Congo DR,Canada,1,2
+Iraq,South Africa,1,2
+United States,Scotland,2,2
+Algeria,Panama,2,2
