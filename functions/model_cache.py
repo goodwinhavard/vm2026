@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from functions.train_poisson_model import train_poisson_model
 from functions.simulate_world_cup import run_full_simulation
+from config import WEIGHT_HISTORICAL, WEIGHT_CUSTOM_MANUAL, WEIGHT_EXTRA_MATCHES
 
 
 @st.cache_resource
@@ -12,6 +13,9 @@ def train_and_save_model():
         return None, f"Training CSV not found: {csv_path}"
 
     df = pd.read_csv(csv_path)
+    df['Weight'] = WEIGHT_HISTORICAL
+
+    extra_dfs = [df]
 
     custom_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'custom_matches_manuell.csv')
     if os.path.exists(custom_path):
@@ -36,19 +40,26 @@ def train_and_save_model():
             return None, f"custom_matches_manuell.csv is missing required columns: {missing}"
 
         custom_df = custom_df[expected_cols]
+        custom_df['Weight'] = WEIGHT_CUSTOM_MANUAL
+        extra_dfs.append(custom_df)
 
-        n_real = len(df)
-        n_syn = len(custom_df)
-        total = n_real + n_syn
+    extra_matches_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'extra_matches.csv')
+    if os.path.exists(extra_matches_path):
+        extra_df = pd.read_csv(
+            extra_matches_path,
+            header=None,
+            names=['home_team', 'away_team', 'home_goal', 'away_goal'],
+        )
+        extra_df['home_goal'] = pd.to_numeric(extra_df['home_goal'], errors='coerce')
+        extra_df['away_goal'] = pd.to_numeric(extra_df['away_goal'], errors='coerce')
+        extra_df = extra_df.dropna(subset=['home_goal', 'away_goal'])
+        extra_df['Weight'] = WEIGHT_EXTRA_MATCHES
+        extra_dfs.append(extra_df)
 
-        df['Weight'] = 0.6
-        custom_df['Weight'] = 0.4
-
-        total_weight = df['Weight'].sum() + custom_df['Weight'].sum()
-        df['Weight'] = df['Weight'] * (total / total_weight)
-        custom_df['Weight'] = custom_df['Weight'] * (total / total_weight)
-
-        df = pd.concat([df, custom_df], ignore_index=True, sort=False)
+    if len(extra_dfs) > 1:
+        df = pd.concat(extra_dfs, ignore_index=True, sort=False)
+        total_weight = df['Weight'].sum()
+        df['Weight'] = df['Weight'] * (len(df) / total_weight)
 
     mapping = {
         'home_team': 'Home Team',

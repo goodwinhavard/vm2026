@@ -55,7 +55,7 @@ United States,Argentina,1,2
 Ecuador,Egypt,3,1
 Switzerland,Portugal,0,1
 Mexico,Uzbekistan,2,1
-Curacao,Ecuador,3,0
+Curacao,Ecuador,1,3
 Mexico,Jordan,2,1
 Paraguay,Egypt,1,3
 Jordan,Ivory Coast,0,2
@@ -93,7 +93,7 @@ Iraq,Senegal,2,0
 Germany,Australia,3,2
 Croatia,Tunisia,1,1
 Scotland,France,3,1
-Iraq,Ecuador,3,0
+Iraq,Ecuador,1,3
 Paraguay,Spain,1,2
 Morocco,Australia,1,0
 Turkey,Uruguay,1,2
@@ -185,7 +185,7 @@ Scotland,Ecuador,1,1
 Japan,Mexico,1,1
 Bosnia and Herzegovina,Curacao,2,0
 Ecuador,Uruguay,2,1
-Japan,Egypt,0,1
+Japan,Egypt,3,1
 Belgium,Bosnia and Herzegovina,2,1
 Jordan,Turkey,1,1
 Ivory Coast,Ecuador,1,3
@@ -213,7 +213,7 @@ Curacao,Austria,0,3
 Mexico,Cape Verde,1,1
 Saudi Arabia,Japan,1,3
 Czech Republic,Paraguay,0,0
-Japan,England,4,0
+Japan,England,1,2
 Brazil,Saudi Arabia,2,1
 Norway,Switzerland,1,1
 Argentina,France,1,1
@@ -601,7 +601,7 @@ Paraguay,Portugal,0,1
 Tunisia,Belgium,0,1
 Belgium,Bosnia and Herzegovina,1,0
 Sweden,Congo DR,1,1
-Croatia,Japan,1,1
+Croatia,Japan,1,2
 Scotland,Iraq,1,1
 Norway,Mexico,2,1
 Tunisia,Haiti,0,0
@@ -877,7 +877,7 @@ Ecuador,Mexico,1,1
 Ivory Coast,Ecuador,1,0
 Austria,Algeria,2,0
 Switzerland,Canada,1,0
-Japan,Brazil,0,2
+Japan,Brazil,1,2
 Sweden,Spain,1,1
 New Zealand,Tunisia,0,1
 England,South Korea,1,1
@@ -924,14 +924,14 @@ South Africa,Tunisia,1,1
 Sweden,Ivory Coast,1,1
 Norway,Haiti,1,0
 Qatar,Switzerland,0,0
-Ecuador,Uruguay,0,0
+Ecuador,Uruguay,1,0
 Brazil,Switzerland,2,1
 Panama,Uruguay,0,0
 Ivory Coast,Uzbekistan,1,1
 South Africa,Bosnia and Herzegovina,1,1
 Algeria,Austria,1,1
 Spain,Paraguay,2,0
-Ecuador,Colombia,1,0
+Ecuador,Colombia,2,0
 South Korea,Japan,0,0
 Austria,Switzerland,0,1
 Iraq,Ghana,0,1
@@ -958,7 +958,7 @@ Ghana,Ivory Coast,1,1
 Switzerland,Turkey,1,1
 Japan,United States,2,2
 Morocco,Haiti,1,0
-Senegal,Ecuador,1,0
+Senegal,Ecuador,1,2
 Morocco,New Zealand,1,0
 Tunisia,Ghana,1,1
 Colombia,Senegal,1,1

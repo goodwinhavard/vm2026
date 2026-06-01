@@ -159,34 +159,3 @@ def run_full_simulation(num_sims=1000, model=None):
             if team != "TBD": ko_counts[team][round_label] += 1
             
     return groups, pos_counts, ko_counts, match_outcomes
-
-# def main():
-#     num_sims = 1000
-#     groups, pos_counts, ko_counts = run_full_simulation(num_sims)
-
-#     print(f"World Cup 2026 Group Stage Simulation ({num_sims} iterations)")
-#     print("Format: Team | Probabilities of finishing (1st, 2nd, 3rd, 4th)\n")
-#     for g in sorted(groups.keys()):
-#         print(f"--- {g} ---")
-#         # Sort teams by their probability of finishing at the top of the group
-#         sorted_teams = sorted(groups[g], key=lambda t: pos_counts[g][t], reverse=True)
-#         for i, t in enumerate(sorted_teams):
-#             probs = [f"{c/num_sims:.0%}" for c in pos_counts[g][t]]
-#             print(f"{i+1}. {t.ljust(20)}: {', '.join(probs)}")
-#         print()
-
-#     print("Knockout Stage Probabilities (Top 20 Favorites)")
-#     print("Team".ljust(20) + " | R32   | R16   | QF    | SF    | Final | Winner")
-#     print("-" * 75)
-#     all_teams = [t for g, teams in groups.items() for t in teams]
-#     sorted_overall = sorted(all_teams, key=lambda t: ko_counts[t]["Winner"], reverse=True)
-#     for t in sorted_overall[:20]:
-#         row = []
-#         for r in ["Round of 32", "Round of 16", "Quarterfinals", "Semifinals", "Final", "Winner"]:
-#             prob = ko_counts[t].get(r, 0) / num_sims
-#             row.append(f"{prob:.1%}".ljust(5))
-#         print(f"{t.ljust(20)} | {' | '.join(row)}")
-    
-
-# if __name__ == "__main__":
-#     main()
