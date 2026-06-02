@@ -3,7 +3,7 @@ import pandas as pd
 import os
 from functions.train_poisson_model import train_poisson_model
 from functions.simulate_world_cup import run_full_simulation
-from config import WEIGHT_HISTORICAL, WEIGHT_CUSTOM_MANUAL, WEIGHT_EXTRA_MATCHES
+from config import WEIGHT_HISTORICAL, WEIGHT_CUSTOM_MANUAL, WEIGHT_EXTRA_MATCHES, WEIGHT_REAL_RESULTS
 
 
 @st.cache_resource
@@ -55,6 +55,20 @@ def train_and_save_model():
         extra_df = extra_df.dropna(subset=['home_goal', 'away_goal'])
         extra_df['Weight'] = WEIGHT_EXTRA_MATCHES
         extra_dfs.append(extra_df)
+
+    real_results_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'real_results.csv')
+    if os.path.exists(real_results_path):
+        real_df = pd.read_csv(
+            real_results_path,
+            header=None,
+            names=['home_team', 'away_team', 'home_goal', 'away_goal'],
+        )
+        real_df['home_goal'] = pd.to_numeric(real_df['home_goal'], errors='coerce')
+        real_df['away_goal'] = pd.to_numeric(real_df['away_goal'], errors='coerce')
+        real_df = real_df.dropna(subset=['home_goal', 'away_goal'])
+        if not real_df.empty:
+            real_df['Weight'] = WEIGHT_REAL_RESULTS
+            extra_dfs.append(real_df)
 
     if len(extra_dfs) > 1:
         df = pd.concat(extra_dfs, ignore_index=True, sort=False)
