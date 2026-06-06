@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from functions.model_cache import train_and_save_model, get_simulation_results, _real_results_hash
 
 st.set_page_config(page_title="World Cup 2026 Simulation", layout="wide")
 
@@ -12,12 +11,11 @@ calculated using a Poisson-based prediction model trained on historical and qual
 
 num_sims = 10000
 
-with st.spinner("Loading simulation results..."):
-    model, err = train_and_save_model()
-    if err:
-        st.error(f"Model training failed: {err}")
-        st.stop()
-    groups, pos_counts, ko_counts, match_outcomes = get_simulation_results(num_sims, model, _real_results_hash())
+if "sim_results" not in st.session_state:
+    st.warning("Please visit the **Home** page first to load the simulation results.")
+    st.stop()
+
+groups, pos_counts, ko_counts, match_outcomes = st.session_state["sim_results"]
 
 all_teams_list = [team for group in groups.values() for team in group]
 

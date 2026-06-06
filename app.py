@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from functions.model_cache import train_and_save_model, get_simulation_results
+from functions.model_cache import train_and_save_model, get_simulation_results, _real_results_hash
 
 st.set_page_config(
     page_title="World Cup 2026",
@@ -30,7 +30,8 @@ with st.spinner("Training model and running simulations..."):
     if err:
         st.error(f"Model error: {err}")
         st.stop()
-    groups, pos_counts, ko_counts, match_outcomes = get_simulation_results(num_sims, model)
+    groups, pos_counts, ko_counts, match_outcomes = get_simulation_results(num_sims, model, _real_results_hash())
+    st.session_state["sim_results"] = (groups, pos_counts, ko_counts, match_outcomes)
 
 st.subheader("Top 5 Favorites to Win")
 all_teams_list = [team for group in groups.values() for team in group]
