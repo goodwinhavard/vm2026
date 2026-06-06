@@ -90,8 +90,15 @@ def train_and_save_model():
     return model, None
 
 
+def _real_results_hash():
+    path = os.path.join(os.path.dirname(__file__), '..', 'data', 'real_results.csv')
+    if not os.path.exists(path):
+        return ""
+    with open(path, 'r', encoding='utf-8') as f:
+        return f.read()
+
 @st.cache_data
-def get_simulation_results(num_sims, _model):
+def get_simulation_results(num_sims, _model, real_results_content=""):
     groups, pos_counts, ko_counts, match_outcomes = run_full_simulation(num_sims, model=_model)
     ko_counts_clean = {team: dict(rounds) for team, rounds in ko_counts.items()}
     match_outcomes_clean = dict(match_outcomes)

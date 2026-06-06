@@ -10,6 +10,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(os.path.dirname(BASE_DIR), "data")
 MODEL_PATH = os.path.join(BASE_DIR, "poisson_model.pkl")
 MATCHES_FILE = os.path.join(DATA_DIR, "wc_group_matches.txt")
+REAL_RESULTS_FILE = os.path.join(DATA_DIR, "real_results.csv")
 
 def resolve_source(source, standings, group_rankings, match_winners, used_thirds):
     if source["type"] == "group":
@@ -64,6 +65,20 @@ def load_matches():
                 matches.append((parts[0].strip(), parts[1].strip()))
     return matches
 
+def load_real_results():
+    """Returns {(home_team, away_team): (home_goals, away_goals)} for completed matches."""
+    results = {}
+    if not os.path.exists(REAL_RESULTS_FILE):
+        return results
+    df = pd.read_csv(REAL_RESULTS_FILE, header=None,
+                     names=['home_team', 'away_team', 'home_goal', 'away_goal'])
+    df['home_goal'] = pd.to_numeric(df['home_goal'], errors='coerce')
+    df['away_goal'] = pd.to_numeric(df['away_goal'], errors='coerce')
+    df = df.dropna()
+    for _, row in df.iterrows():
+        results[(row['home_team'], row['away_team'])] = (int(row['home_goal']), int(row['away_goal']))
+    return results
+
 def predict_score(home_team, away_team, model):
     idx_h = model['team_idx'].get(home_team)
     idx_a = model['team_idx'].get(away_team)
@@ -84,16 +99,21 @@ def predict_score(home_team, away_team, model):
         
     return np.random.poisson(np.exp(l_h_log)), np.random.poisson(np.exp(l_a_log))
 
-def simulate_group_stage(groups, matches, team_to_group, model):
-    # Initialize table stats for each team
+def simulate_group_stage(groups, matches, team_to_group, model, real_results=None):
     standings = {g: {t: {'pts': 0, 'gd': 0, 'gf': 0} for t in teams} for g, teams in groups.items()}
     match_results = []
-    
+
+    if real_results is None:
+        real_results = {}
+
     for t1, t2 in matches:
         g = team_to_group.get(t1)
         if not g: continue
-        
-        s1, s2 = predict_score(t1, t2, model)
+
+        if (t1, t2) in real_results:
+            s1, s2 = real_results[(t1, t2)]
+        else:
+            s1, s2 = predict_score(t1, t2, model)
         match_results.append((t1, t2, s1, s2))
         
         standings[g][t1]['gf'] += s1
@@ -134,14 +154,14 @@ def run_full_simulation(num_sims=1000, model=None):
         model = load_poisson_model()
     groups, team_to_group = load_groups()
     matches = load_matches()
+    real_results = load_real_results()
 
-    # Track finishing positions for each team in each group
     pos_counts = {g: {t: [0]*4 for t in teams} for g, teams in groups.items()}
     ko_counts = {t: defaultdict(int) for g, teams in groups.items() for t in teams}
-    match_outcomes = defaultdict(lambda: [0, 0, 0]) # [Home Win, Draw, Away Win]
+    match_outcomes = defaultdict(lambda: [0, 0, 0])
 
     for _ in range(num_sims):
-        standings, sim_rankings, results = simulate_group_stage(groups, matches, team_to_group, model)
+        standings, sim_rankings, results = simulate_group_stage(groups, matches, team_to_group, model, real_results)
         for g, ranked_teams in sim_rankings.items():
             for i, t in enumerate(ranked_teams):
                 if i < 4: pos_counts[g][t][i] += 1
