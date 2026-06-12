@@ -16,11 +16,6 @@ st.sidebar.write(
 
 st.title("Prediction Model for FIFA World Cup 2026")
 
-col1, col2, col3 = st.columns(3)
-col1.metric("Host countries", "USA, Canada, Mexico")
-col2.metric("Teams", "48")
-col3.metric("Start", "June 2026")
-
 st.divider()
 
 num_sims = 10000
