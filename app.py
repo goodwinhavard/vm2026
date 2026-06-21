@@ -18,7 +18,7 @@ st.title("Prediction Model for FIFA World Cup 2026")
 
 st.divider()
 
-num_sims = 10000
+num_sims = 100000
 
 with st.spinner("Training model and running simulations..."):
     model, err = train_and_save_model()

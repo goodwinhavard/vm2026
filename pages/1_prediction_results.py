@@ -9,7 +9,7 @@ This page shows the probabilities of each team reaching various stages of the 20
 calculated using a Poisson-based prediction model trained on historical and qualifying data.
 """)
 
-num_sims = 10000
+num_sims = 100000
 
 if "sim_results" not in st.session_state:
     st.warning("Please visit the **Home** page first to load the simulation results.")
