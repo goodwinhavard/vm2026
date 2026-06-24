@@ -129,12 +129,60 @@ def simulate_group_stage(groups, matches, team_to_group, model, real_results=Non
             standings[g][t1]['pts'] += 1
             standings[g][t2]['pts'] += 1
             
+    # Build head-to-head results per group
+    h2h = {}
+    for t1, t2, s1, s2 in match_results:
+        g = team_to_group[t1]
+        if g not in h2h:
+            h2h[g] = {}
+        h2h[g][(t1, t2)] = (s1, s2)
+
     group_rankings = {}
     for g, table in standings.items():
-        # Standard tie-breakers: Points, Goal Difference, Goals For
-        sorted_teams = sorted(table.items(), key=lambda x: (x[1]['pts'], x[1]['gd'], x[1]['gf']), reverse=True)
-        group_rankings[g] = [t for t, stats in sorted_teams]
+        group_rankings[g] = _rank_group(table, h2h.get(g, {}))
     return standings, group_rankings, match_results
+
+
+def _rank_group(table, h2h):
+    """Rank group teams: pts > h2h pts > h2h gd > h2h gf > overall gd > overall gf."""
+
+    def h2h_record(team, opponents):
+        pts = gd = gf = 0
+        for opp in opponents:
+            if (team, opp) in h2h:
+                st, so = h2h[(team, opp)]
+            elif (opp, team) in h2h:
+                so, st = h2h[(opp, team)]
+            else:
+                continue
+            gf += st
+            gd += st - so
+            if st > so: pts += 3
+            elif st == so: pts += 1
+        return pts, gd, gf
+
+    teams = list(table.keys())
+    sorted_by_pts = sorted(teams, key=lambda t: table[t]['pts'], reverse=True)
+
+    result = []
+    i = 0
+    while i < len(sorted_by_pts):
+        pts_val = table[sorted_by_pts[i]]['pts']
+        j = i + 1
+        while j < len(sorted_by_pts) and table[sorted_by_pts[j]]['pts'] == pts_val:
+            j += 1
+        tied = sorted_by_pts[i:j]
+        if len(tied) == 1:
+            result.extend(tied)
+        else:
+            ranked = sorted(tied, key=lambda t: (
+                *h2h_record(t, [x for x in tied if x != t]),
+                table[t]['gd'],
+                table[t]['gf']
+            ), reverse=True)
+            result.extend(ranked)
+        i = j
+    return result
 
 def simulate_knockout_stage(standings, group_rankings, model):
     match_winners, used_thirds, reached = {}, set(), []
