@@ -58,9 +58,15 @@ Tunisia,1,3,Netherlands
 Japan,1,1,Sweden
 Turkey,3,2,USA
 Paraguay,0,0,Australia
-Norway,–,France
-Senegal,–,Iraq
+Norway,France,1,4
+Senegal,Iraq,5,0
 Uruguay,0,1,Spain
 Cape Verde,0,0,Saudi Arabia
 New Zealand,1,5,Belgium
-Egypt,1,2,Iran
+Egypt,1,1,Iran
+Panama,England,0,2
+Croatia,Ghana,2,1
+Colombia,Portugal,0,0
+DR Congo,Uzbekistan,3,1
+Jordan,Argentina,1,3
+Algeria,Austria,3,3
