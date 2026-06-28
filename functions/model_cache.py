@@ -99,7 +99,8 @@ def _real_results_hash():
 
 @st.cache_data
 def get_simulation_results(num_sims, _model, real_results_content=""):
-    groups, pos_counts, ko_counts, match_outcomes = run_full_simulation(num_sims, model=_model)
+    groups, pos_counts, ko_counts, match_outcomes, r32_outcomes = run_full_simulation(num_sims, model=_model)
     ko_counts_clean = {team: dict(rounds) for team, rounds in ko_counts.items()}
     match_outcomes_clean = dict(match_outcomes)
-    return groups, pos_counts, ko_counts_clean, match_outcomes_clean
+    r32_outcomes_clean = dict(r32_outcomes)
+    return groups, pos_counts, ko_counts_clean, match_outcomes_clean, r32_outcomes_clean

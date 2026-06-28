@@ -13,6 +13,8 @@ MATCHES_FILE = os.path.join(DATA_DIR, "wc_group_matches.txt")
 REAL_RESULTS_FILE = os.path.join(DATA_DIR, "real_results.csv")
 
 def resolve_source(source, standings, group_rankings, match_winners, used_thirds):
+    if isinstance(source, str):
+        return source
     if source["type"] == "group":
         group, pos = source["group"], source["position"]
         if pos == "winner": return group_rankings[group][0]
@@ -36,10 +38,8 @@ def get_match_winner(t1, t2, model):
     s1, s2 = predict_score(t1, t2, model)
     if s1 > s2: return t1
     if s2 > s1: return t2
-    # Extra time simulation
-    while s1 == s2:
-        s1, s2 = predict_score(t1, t2, model)
-    return t1 if s1 > s2 else t2
+    # Penalty shootout: 50/50
+    return t1 if np.random.random() < 0.5 else t2
 
 def load_poisson_model():
     if not os.path.exists(MODEL_PATH):
@@ -186,6 +186,7 @@ def _rank_group(table, h2h):
 
 def simulate_knockout_stage(standings, group_rankings, model):
     match_winners, used_thirds, reached = {}, set(), []
+    r32_home_wins = {}
     for round_name, round_matches in KNOCKOUT_DEFS.items():
         for match_num, match_def in round_matches.items():
             t1 = resolve_source(match_def["home"], standings, group_rankings, match_winners, used_thirds)
@@ -193,9 +194,11 @@ def simulate_knockout_stage(standings, group_rankings, model):
             reached.extend([(t1, round_name), (t2, round_name)])
             winner = get_match_winner(t1, t2, model)
             match_winners[match_num] = winner
+            if round_name == "Round of 32":
+                r32_home_wins[match_num] = 1 if winner == t1 else 0
     if 104 in match_winners:
         reached.append((match_winners[104], "Winner"))
-    return reached
+    return reached, r32_home_wins
 
 def run_full_simulation(num_sims=1000, model=None):
     if model is None:
@@ -207,6 +210,7 @@ def run_full_simulation(num_sims=1000, model=None):
     pos_counts = {g: {t: [0]*4 for t in teams} for g, teams in groups.items()}
     ko_counts = {t: defaultdict(int) for g, teams in groups.items() for t in teams}
     match_outcomes = defaultdict(lambda: [0, 0, 0])
+    r32_outcomes = defaultdict(lambda: [0, 0])  # {match_num: [home_wins, away_wins]}
 
     for _ in range(num_sims):
         standings, sim_rankings, results = simulate_group_stage(groups, matches, team_to_group, model, real_results)
@@ -222,8 +226,11 @@ def run_full_simulation(num_sims=1000, model=None):
             else:
                 match_outcomes[(t1, t2)][2] += 1
 
-        reached = simulate_knockout_stage(standings, sim_rankings, model)
+        reached, r32_home_wins = simulate_knockout_stage(standings, sim_rankings, model)
         for (team, round_label) in reached:
             if team != "TBD": ko_counts[team][round_label] += 1
-            
-    return groups, pos_counts, ko_counts, match_outcomes
+        for match_num, home_won in r32_home_wins.items():
+            r32_outcomes[match_num][0] += home_won
+            r32_outcomes[match_num][1] += (1 - home_won)
+
+    return groups, pos_counts, ko_counts, match_outcomes, r32_outcomes
