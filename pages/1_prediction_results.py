@@ -16,7 +16,7 @@ if "sim_results" not in st.session_state:
     st.warning("Please visit the **Home** page first to load the simulation results.")
     st.stop()
 
-groups, pos_counts, ko_counts, match_outcomes, r32_outcomes = st.session_state["sim_results"]
+groups, pos_counts, ko_counts, match_outcomes, ko_match_outcomes = st.session_state["sim_results"]
 
 all_teams_list = [team for group in groups.values() for team in group]
 
@@ -61,7 +61,7 @@ for match_num in sorted(KNOCKOUT_DEFS["Round of 32"]):
     away_label = slot_label(away)
     home_cands = fmt_candidates(top_candidates(home))
     away_cands = fmt_candidates(top_candidates(away))
-    outcomes = r32_outcomes.get(match_num, [0, 0])
+    outcomes = ko_match_outcomes.get(match_num, [0, 0])
     total = outcomes[0] + outcomes[1]
     home_pct = outcomes[0] / total if total > 0 else 0.5
     away_pct = outcomes[1] / total if total > 0 else 0.5
@@ -85,6 +85,36 @@ st.dataframe(
 )
 
 st.divider()
+
+for round_name in KNOCKOUT_DEFS:
+    if round_name == "Round of 32":
+        continue
+    round_rows = []
+    for match_num in sorted(KNOCKOUT_DEFS[round_name]):
+        match_def = KNOCKOUT_DEFS[round_name][match_num]
+        home, away = match_def["home"], match_def["away"]
+        if not (isinstance(home, str) and isinstance(away, str)):
+            continue
+        outcomes = ko_match_outcomes.get(match_num, [0, 0])
+        total = outcomes[0] + outcomes[1]
+        home_pct = outcomes[0] / total if total > 0 else 0.5
+        away_pct = outcomes[1] / total if total > 0 else 0.5
+        round_rows.append({
+            "Home": home,
+            "Home Win%": home_pct,
+            "Away Win%": away_pct,
+            "Away": away,
+        })
+    if round_rows:
+        st.header(f"{round_name} Predicted Matchups")
+        st.write("Win probabilities for confirmed matchups.")
+        df_round = pd.DataFrame(round_rows)
+        st.dataframe(
+            df_round.style.format({"Home Win%": "{:.1%}", "Away Win%": "{:.1%}"}),
+            use_container_width=True,
+            hide_index=True
+        )
+        st.divider()
 
 st.header("2. Knockout Stage Probabilities")
 st.write("Percentage chance of reaching each round (cumulative). Sorted by chance of winning.")

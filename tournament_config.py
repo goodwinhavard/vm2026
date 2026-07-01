@@ -33,9 +33,9 @@ KNOCKOUT_DEFS = {
         88: {"home": "Australia", "away": "Egypt"},
     },
     "Round of 16": {
-        89: {"home": {"type": "match", "match": 74}, "away": {"type": "match", "match": 77}},
-        90: {"home": {"type": "match", "match": 73}, "away": {"type": "match", "match": 75}},
-        91: {"home": {"type": "match", "match": 76}, "away": {"type": "match", "match": 78}},
+        89: {"home": "Paraguay", "away": "France"},
+        90: {"home": "Canada", "away": "Morocco"},
+        91: {"home": "Brazil", "away": "Norway"},
         92: {"home": {"type": "match", "match": 79}, "away": {"type": "match", "match": 80}},
         93: {"home": {"type": "match", "match": 83}, "away": {"type": "match", "match": 84}},
         94: {"home": {"type": "match", "match": 81}, "away": {"type": "match", "match": 82}},
