@@ -28,7 +28,7 @@ with st.spinner("Training model and running simulations..."):
     groups, pos_counts, ko_counts, match_outcomes, ko_match_outcomes = get_simulation_results(num_sims, model, _real_results_hash())
     st.session_state["sim_results"] = (groups, pos_counts, ko_counts, match_outcomes, ko_match_outcomes)
 
-st.subheader("Favorites to Win (>0.1% probability)")
+st.subheader("Favorites to Win (>0.01% probability)")
 all_teams_list = [team for group in groups.values() for team in group]
 win_probabilities = [
     {"Team": team, "Probability of Winning": ko_counts[team].get("Winner", 0) / num_sims}
