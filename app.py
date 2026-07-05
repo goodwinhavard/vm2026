@@ -28,15 +28,16 @@ with st.spinner("Training model and running simulations..."):
     groups, pos_counts, ko_counts, match_outcomes, ko_match_outcomes = get_simulation_results(num_sims, model, _real_results_hash())
     st.session_state["sim_results"] = (groups, pos_counts, ko_counts, match_outcomes, ko_match_outcomes)
 
-st.subheader("Top 5 Favorites to Win")
+st.subheader("Favorites to Win (>0.1% probability)")
 all_teams_list = [team for group in groups.values() for team in group]
 win_probabilities = [
     {"Team": team, "Probability of Winning": ko_counts[team].get("Winner", 0) / num_sims}
     for team in all_teams_list
 ]
-top_5_df = pd.DataFrame(win_probabilities).sort_values("Probability of Winning", ascending=False).head(5)
+favorites_df = pd.DataFrame(win_probabilities)
+favorites_df = favorites_df[favorites_df["Probability of Winning"] > 0.001].sort_values("Probability of Winning", ascending=False)
 st.table(
-    top_5_df.set_index("Team").style.format({"Probability of Winning": "{:.1%}"})
+    favorites_df.set_index("Team").style.format({"Probability of Winning": "{:.1%}"})
 )
 
 st.caption("See the **Prediction Results** page for full group stage, knockout stage, and match probabilities.")
