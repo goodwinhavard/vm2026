@@ -44,9 +44,9 @@ KNOCKOUT_DEFS = {
     },
     "Quarterfinals": {
         97: {"home": "France", "away": "Morocco"},
-        98: {"home": {"type": "match", "match": 93}, "away": {"type": "match", "match": 94}},
-        99: {"home": {"type": "match", "match": 91}, "away": {"type": "match", "match": 92}},
-        100: {"home": {"type": "match", "match": 95}, "away": {"type": "match", "match": 96}},
+        98: {"home": "Spain", "away": "Belgium"},
+        99: {"home": "Norway", "away": "England"},
+        100: {"home": "Argentina", "away": "Switzerland"},
     },
     "Semifinals": {
         101: {"home": {"type": "match", "match": 97}, "away": {"type": "match", "match": 98}},
